@@ -17,7 +17,11 @@ module ActionView
 
           # remove the prio selected from selected to avoid getting multiple
           # selected options of the same one.
-          selected = selected - priority_countries.map(&:last)
+          if selected.kind_of? Array
+            selected = selected - priority_countries.map(&:last)
+          elsif priority_countries.map(&:last).include?(selected)
+            selected = nil
+          end
         end
 
         return country_options + options_for_select(ISO3166::Country::Names, selected)
