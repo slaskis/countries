@@ -14,6 +14,10 @@ module ActionView
           priority_countries = [*priority_countries].map {|x| [x,ISO3166::Country::NameIndex[x]] }
           country_options += options_for_select(priority_countries, selected)
           country_options += "<option value=\"\" disabled=\"disabled\">-------------</option>\n".html_safe
+
+          # remove the prio selected from selected to avoid getting multiple
+          # selected options of the same one.
+          selected = selected - priority_countries.map(&:last)
         end
 
         return country_options + options_for_select(ISO3166::Country::Names, selected)
